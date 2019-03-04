@@ -31,7 +31,7 @@ classdef NCO < handle
             self.Counter = uint32(0);
             self.deltaPhase = uint32(0);
             self.BigCounter = uint64(0);
-            self.index = 0;
+            self.index = 1;
           end % of for loop
          else
           error('Value must be numeric');
@@ -48,7 +48,7 @@ classdef NCO < handle
          self.BigCounter = self.BigCounter - uint64(intmax('uint32'));
        end % of Counter size test to allow roll-over
        self.Counter = uint32(self.BigCounter);
-       self.index = bitshift(self.Counter, self.tablewidth - 32);
+       self.index = bitshift(self.Counter, self.tablewidth - 32) + 1;
 %       self.index = bitand(self.mask, self.index);
        end % of function clk
    end % of methods
