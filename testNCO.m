@@ -9,7 +9,7 @@ printf("length: %d mask: %d dPhase: %d\n", a.tablelength, a.mask, a.deltaPhase);
 %legend('sine', 'cosine');
 for n = 1:36
   a.Counter;
-  printf("%10d %10d %3d %6.3f %6.3f\n",...
+  printf("%10d %10d %3d %3d %3d\n",...
   a.Counter, a.BigCounter, a.index, a.sintable(a.index), a.costable(a.index));
   a.clock();
 end

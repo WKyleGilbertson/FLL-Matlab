@@ -28,6 +28,6 @@ for idx = 1:30
 dot   = I1 * I2 + Q1 * Q2;
 cross = I1 * Q2 - I2 * Q1;
 FreqError = atan2(cross, dot)/(2 * pi * PDItime);
-printf("%3d %6.3f\n", idx, FreqError);
+printf("%3d %9.3f\n", idx, FreqError);
 out.SetFrequency(out.Frequency + FreqError * 0.15); % How much adjustment?
 end % of 30 sample for loop (60 ms)

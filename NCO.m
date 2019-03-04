@@ -27,7 +27,9 @@ classdef NCO < handle
           self.mask = self.tablelength - 1;
           for n = 1:self.tablelength
             self.sintable(n) = sin(2.0 * pi * n / self.tablelength);
+            self.sintable(n) = int8(self.tablelength * self.sintable(n));
             self.costable(n) = cos(2.0 * pi * n / self.tablelength);
+            self.costable(n) = int8(self.tablelength * self.costable(n));
             self.Counter = uint32(0);
             self.deltaPhase = uint32(0);
             self.BigCounter = uint64(0);
