@@ -12,7 +12,7 @@ ref.SetFrequency(RefFreq);  % Fc = 9.548e6
 out.SetFrequency(OutFreq);
 I1 = I2 = Q1 = Q2 = 0;
 
-for idx = 1:30
+for idx = 1:5
  for n = 1:(FSample*PDItime)
   ref.clock();
   out.clock();
@@ -30,6 +30,6 @@ dot   = I1 * I2 + Q1 * Q2;
 cross = I1 * Q2 - I2 * Q1;
 FreqError = atan2(cross, dot)/(2 * pi * PDItime);
 printf("%3d %9.3f\n", idx, FreqError);
-out.SetFrequency(out.Frequency + FreqError / 8); % How much adjustment?
+out.SetFrequency(out.Frequency + FreqError * 1.0); % How much adjustment?
 I1 = I2 = Q1 = Q2 = 0;
 end % of 30 sample for loop (60 ms)
