@@ -13,7 +13,7 @@ out.SetFrequency(OutFreq);
 I1 = I2 = Q1 = Q2 = 0;
 Phi = LastPhi = 0;
 Error = LastError = 0;
-Tau1 = 1 / 47.14;
+Tau1 = 1 / 47.14; % Tau1 is wrong. Need to square Wn
 Tau2 = 2 * 0.707 / 47.14;
 
 for idx = 1:500
