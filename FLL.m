@@ -3,7 +3,7 @@
 clear all;
 close all;
 RefFreq = 9548000;
-OutFreq = 9548150;
+OutFreq = 9547900;
 FSample = 38192000;
 PDItime = 0.001;  % PreDetection Interval // typically 1 ms
 ref = NCO(5, FSample);
@@ -29,8 +29,9 @@ for idx = 1:25
 dot   = I1 * I2 + Q1 * Q2;
 cross = I1 * Q2 - I2 * Q1;
 FreqError = atan2(cross, dot)/(2 * pi * PDItime);
-out.SetFrequency(out.Frequency - FreqError * 1.125); % How much adjustment?
-printf("%3d %9.3f %11.3f %11.3f\n",...
-        idx, FreqError, out.Frequency, out.Frequency - ref.Frequency);
+NewFreq = out.Frequency + FreqError * 1.0;
+printf("%3d CalcErr:%9.3f ActErr:%11.3f Fnow:%11.3f Fnxt:%11.3f\n",...
+        idx, FreqError, out.Frequency - ref.Frequency, out.Frequency, NewFreq);
+out.SetFrequency(NewFreq);
 I1 = I2 = Q1 = Q2 = 1;
 end % of 30 sample for loop (60 ms)
