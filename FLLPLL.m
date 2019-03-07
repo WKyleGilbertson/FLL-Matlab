@@ -2,6 +2,12 @@
 %
 clear all;
 close all;
+function [Tau1, Tau2, Wn] = CalcLoopCoef(LBW, zeta, k)
+ Wn = Wn = LBW*8*zeta / (4*zeta.^2 + 1);
+ Tau1 = k / (Wn.^2);
+ Tau2 = 2.0 * zeta / Wn;
+end
+
 RefFreq = 9548000;
 OutFreq = 9548005;
 FSample = 38192000;
@@ -13,13 +19,13 @@ out.SetFrequency(OutFreq);
 I1 = I2 = Q1 = Q2 = 1;
 Phi = LastPhi = 0;
 Error = LastError = 0;
-Tau1 = 1 / (47.14 * 47.14);
-Tau2 = 2 * 0.707 / 47.14;
-Wn = 47.14;
-printf("Tau1: %5.3g Tau2: %5.3g Wn: %5.3g Ref: %7.0f\n",...
+[Tau1, Tau2, Wn] = CalcLoopCoef(25, 0.707, 1.0);
+printf("Tau1: %5.3g Tau2: %5.3g Wn: %5.2f Ref: %7.0f\n",...
         Tau1, Tau2, Wn, RefFreq);
-
-for idx = 1:500
+idx = 0; 
+while (abs(out.Frequency - RefFreq) > 1 && abs(out.Frequency - RefFreq) < 1000)
+idx = idx + 1;
+%for idx = 1:500
  for n = 1:(FSample*PDItime)
   ref.clock();
   out.clock();
@@ -50,7 +56,7 @@ dot   = I1 * I2 + Q1 * Q2;
 cross = I1 * Q2 - I2 * Q1;
 FreqError = atan2(cross, dot)/(2 * pi * PDItime);
 E(idx) = out.Frequency - RefFreq;
-printf("%3d FErr:%9.3f dF:%9.3f Phi: %7.0f F:%7.0f\n",...
+printf("%3d FErr:%9.3f dF:%9.3f Phi: %3.0f F:%7.0f\n",...
        idx, FreqError, E(idx), Phi, out.Frequency);
 %out.SetFrequency(out.Frequency + FreqError * 1.0); % How much adjustment?
 I1 = I2 = Q1 = Q2 = 1;
