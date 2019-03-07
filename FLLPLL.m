@@ -32,7 +32,7 @@ for idx = 1:500
  LastError = Error;
  out.SetFrequency(out.Frequency - Phi * 1.0); % How much adjustment?
 % printf("Carrier Error: %9.3f Phi: %9.3f\n", Error, Phi);
- 
+
  for n = 1:(FSample*PDItime)
   ref.clock();
   out.clock();
@@ -52,7 +52,6 @@ FreqError = atan2(cross, dot)/(2 * pi * PDItime);
 E(idx) = out.Frequency - RefFreq;
 printf("%3d FErr:%9.3f dF:%9.3f Phi: %7.0f F:%7.0f\n",...
        idx, FreqError, E(idx), Phi, out.Frequency);
-%plot(E);
 %out.SetFrequency(out.Frequency + FreqError * 1.0); % How much adjustment?
 I1 = I2 = Q1 = Q2 = 1;
 end % of 30 sample for loop (60 ms)
