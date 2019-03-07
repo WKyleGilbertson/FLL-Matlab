@@ -15,6 +15,9 @@ Phi = LastPhi = 0;
 Error = LastError = 0;
 Tau1 = 1 / (47.14 * 47.14);
 Tau2 = 2 * 0.707 / 47.14;
+Wn = 47.14;
+printf("Tau1: %5.3g Tau2: %5.3g Wn: %5.3g Ref: %7.0f\n",...
+        Tau1, Tau2, Wn, RefFreq);
 
 for idx = 1:500
  for n = 1:(FSample*PDItime)
@@ -47,7 +50,8 @@ dot   = I1 * I2 + Q1 * Q2;
 cross = I1 * Q2 - I2 * Q1;
 FreqError = atan2(cross, dot)/(2 * pi * PDItime);
 E(idx) = out.Frequency - RefFreq;
-printf("%3d FErr:%9.3f dF:%9.3f F:%7.0f\n", idx, FreqError, E(idx), out.Frequency);
+printf("%3d FErr:%9.3f dF:%9.3f Phi: %7.0f F:%7.0f\n",...
+       idx, FreqError, E(idx), Phi, out.Frequency);
 %plot(E);
 %out.SetFrequency(out.Frequency + FreqError * 1.0); % How much adjustment?
 I1 = I2 = Q1 = Q2 = 1;
