@@ -16,14 +16,14 @@ for idx = 1:25
  for n = 1:(FSample*PDItime)
   ref.clock();
   out.clock();
-  Q1 = Q1 + ref.costable(ref.index) * out.costable(out.index);
-  I1 = I1 + ref.sintable(ref.index) * out.sintable(out.index);
+  I1 = I1 + ref.costable(ref.index) * out.costable(out.index);
+  Q1 = Q1 + ref.sintable(ref.index) * out.sintable(out.index);
  end % first ms (or PDI interval) of samples
  for n = 1:(FSample*PDItime)
   ref.clock();
   out.clock();
-  Q2 = Q2 + ref.costable(ref.index) * out.costable(out.index);
-  I2 = I2 + ref.sintable(ref.index) * out.sintable(out.index);
+  I2 = I2 + ref.costable(ref.index) * out.costable(out.index);
+  Q2 = Q2 + ref.sintable(ref.index) * out.sintable(out.index);
  end % second ms (or PDI interval) of samples
 
 dot   = I1 * I2 + Q1 * Q2;
