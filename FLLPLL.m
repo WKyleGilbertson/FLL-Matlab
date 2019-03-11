@@ -9,7 +9,7 @@ function [Tau1, Tau2, Wn] = CalcLoopCoef(LBW, zeta, k)
 end
 
 RefFreq = 9548000;
-OutFreq = 9548005;
+OutFreq = 9548350;
 FSample = 38192000;
 PDItime = 0.001;  % PreDetection Interval // typically 1 ms
 ref = NCO(5, FSample);
@@ -23,16 +23,16 @@ Error = LastError = 0;
 printf("Tau1: %5.3g Tau2: %5.3g Wn: %5.2f Ref: %7.0f\n",...
         Tau1, Tau2, Wn, RefFreq);
 idx = 0; 
-while (abs(out.Frequency - RefFreq) > 1 && abs(out.Frequency - RefFreq) < 1000)
-idx = idx + 1;
-%for idx = 1:500
+%while (abs(out.Frequency - RefFreq) > 1 && abs(out.Frequency - RefFreq) < 1000)
+%idx = idx + 1;
+for idx = 1:500
  for n = 1:(FSample*PDItime)
   ref.clock();
   out.clock();
-  I1 = I1 + ref.costable(ref.index) * out.costable(out.index);
-  Q1 = Q1 + ref.sintable(ref.index) * out.sintable(out.index);
+  I1 = I1 + ref.sintable(ref.index) * out.sintable(out.index);
+  Q1 = Q1 + ref.sintable(ref.index) * out.costable(out.index);
  end % first ms (or PDI interval) of samples
- Error = atan2(Q1,I1)/(2*pi); % Should be just atan(Q1/I1)
+ Error = atan(Q1/I1)/(2*pi); % Should be just atan(Q1/I1)
  Phi = LastPhi + Tau2/Tau1 * (Error - LastError) + Error * (PDItime/Tau1);
  LastPhi = Phi;
  LastError = Error;
@@ -42,10 +42,10 @@ idx = idx + 1;
  for n = 1:(FSample*PDItime)
   ref.clock();
   out.clock();
-  I2 = I2 + ref.costable(ref.index) * out.costable(out.index);
-  Q2 = Q2 + ref.sintable(ref.index) * out.sintable(out.index);
+  I2 = I2 + ref.sintable(ref.index) * out.sintable(out.index);
+  Q2 = Q2 + ref.sintable(ref.index) * out.costable(out.index);
  end % second ms (or PDI interval) of samples
- Error = atan2(Q2,I2)/(2*pi); % Should be just atan(Q1/I1)
+ Error = atan(Q2/I2)/(2*pi); % Should be just atan(Q1/I1)
  Phi = LastPhi + Tau2/Tau1 * (Error - LastError) + Error * (PDItime/Tau1);
  LastPhi = Phi;
  LastError = Error;
@@ -58,7 +58,7 @@ FreqError = atan2(cross, dot)/(2 * pi * PDItime);
 E(idx) = out.Frequency - RefFreq;
 printf("%3d FErr:%9.3f dF:%9.3f Phi: %3.0f F:%7.0f\n",...
        idx, FreqError, E(idx), Phi, out.Frequency);
-%out.SetFrequency(out.Frequency + FreqError * 1.0); % How much adjustment?
+out.SetFrequency(out.Frequency + FreqError * 1.0); % How much adjustment?
 I1 = I2 = Q1 = Q2 = 1;
 end % of 30 sample for loop (60 ms)
 plot(E);
