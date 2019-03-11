@@ -58,7 +58,7 @@ FreqError = atan2(cross, dot)/(2 * pi * PDItime);
 E(idx) = out.Frequency - RefFreq;
 printf("%3d FErr:%9.3f dF:%9.3f Phi: %3.0f F:%7.0f\n",...
        idx, FreqError, E(idx), Phi, out.Frequency);
-out.SetFrequency(out.Frequency + FreqError * 1.0); % How much adjustment?
+%out.SetFrequency(out.Frequency + FreqError * 1.0); % How much adjustment?
 I1 = I2 = Q1 = Q2 = 1;
 end % of 30 sample for loop (60 ms)
 plot(E);
