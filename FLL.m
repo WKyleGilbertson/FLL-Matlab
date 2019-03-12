@@ -3,7 +3,7 @@
 clear all;
 close all;
 RefFreq = 9548000;
-OutFreq = 9548005;
+OutFreq = 9548325;
 FSample = 38192000;
 PDItime = 0.001;  % PreDetection Interval // typically 1 ms
 ref = NCO(5, FSample);
@@ -16,8 +16,9 @@ for idx = 1:25
  for n = 1:(FSample*PDItime)
   ref.clock();
   out.clock();
-  I1 = I1 + ref.sintable(ref.index) * out.sintable(out.index);
-  Q1 = Q1 + ref.sintable(ref.index) * out.costable(out.index);
+  SampleData = ref.sintable(ref.index);
+  I1 = I1 + SampleData * out.sintable(out.index);
+  Q1 = Q1 + SampleData * out.costable(out.index);
 %  if n == 1
 %   printf("%ld %ld ", I1, Q1);
 %  end
@@ -25,8 +26,9 @@ for idx = 1:25
  for n = 1:(FSample*PDItime)
   ref.clock();
   out.clock();
-  I2 = I2 + ref.sintable(ref.index) * out.sintable(out.index);
-  Q2 = Q2 + ref.sintable(ref.index) * out.costable(out.index);
+  SampleData = ref.sintable(ref.index);
+  I2 = I2 + SampleData * out.sintable(out.index);
+  Q2 = Q2 + SampleData * out.costable(out.index);
  end % second ms (or PDI interval) of samples
 
 dot   = I1 * I2 + Q1 * Q2;
