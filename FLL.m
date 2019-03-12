@@ -3,16 +3,16 @@
 clear all;
 close all;
 RefFreq = 9548000;
-OutFreq = 9548325;
+OutFreq = 9548250;
 FSample = 38192000;
 PDItime = 0.001;  % PreDetection Interval // typically 1 ms
-ref = NCO(5, FSample);
+ref = NCO(3, FSample);
 out = NCO(5, FSample);
 ref.SetFrequency(RefFreq);  % Fc = 9.548e6
 out.SetFrequency(OutFreq);
 I1 = I2 = Q1 = Q2 = 1;
 
-for idx = 1:25
+for idx = 1:30
  for n = 1:(FSample*PDItime)
   ref.clock();
   out.clock();
