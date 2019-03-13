@@ -29,10 +29,11 @@ for idx = 1:500
  for n = 1:(FSample*PDItime)
   ref.clock();
   out.clock();
-  I1 = I1 + ref.sintable(ref.index) * out.sintable(out.index);
-  Q1 = Q1 + ref.sintable(ref.index) * out.costable(out.index);
+  SampleData = ref.sintable(ref.index);
+  I1 = I1 + SampleData * out.sintable(out.index);
+  Q1 = Q1 + SampleData * out.costable(out.index);
  end % first ms (or PDI interval) of samples
- Error = atan(Q1/I1)/(2*pi); % Should be just atan(Q1/I1)
+ Error = atan2(Q1,I1)/(2*pi); % Should be just atan(Q1/I1)
  Phi = LastPhi + Tau2/Tau1 * (Error - LastError) + Error * (PDItime/Tau1);
  LastPhi = Phi;
  LastError = Error;
@@ -42,10 +43,11 @@ for idx = 1:500
  for n = 1:(FSample*PDItime)
   ref.clock();
   out.clock();
-  I2 = I2 + ref.sintable(ref.index) * out.sintable(out.index);
-  Q2 = Q2 + ref.sintable(ref.index) * out.costable(out.index);
+  SampleData = ref.sintable(ref.index);
+  I2 = I2 + SampleData * out.sintable(out.index);
+  Q2 = Q2 + SampleData * out.costable(out.index);
  end % second ms (or PDI interval) of samples
- Error = atan(Q2/I2)/(2*pi); % Should be just atan(Q1/I1)
+ Error = atan2(Q2,I2)/(2*pi); % Should be just atan(Q1/I1)
  Phi = LastPhi + Tau2/Tau1 * (Error - LastError) + Error * (PDItime/Tau1);
  LastPhi = Phi;
  LastError = Error;
